@@ -1,22 +1,16 @@
+import { drizzle } from 'drizzle-orm/mysql2';
+import mysql from 'mysql2/promise';
 import * as schema from './schema';
+import dotenv from 'dotenv';
 
-let db: any;
+dotenv.config();
 
-// Check if running in Bun environment
-const isBun = typeof process !== 'undefined' && process.versions?.bun;
+const connection = await mysql.createConnection({
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+});
 
-if (isBun) {
-  // Bun environment
-  const { Database } = require('bun:sqlite');
-  const { drizzle } = require('drizzle-orm/bun-sqlite');
-  const sqlite = new Database('sqlite.db');
-  db = drizzle(sqlite, { schema });
-} else {
-  // Node.js environment
-  const Database = require('better-sqlite3');
-  const { drizzle } = require('drizzle-orm/better-sqlite3');
-  const sqlite = new Database('sqlite.db');
-  db = drizzle(sqlite, { schema });
-}
-
-export { db };
+export const db = drizzle(connection, { schema, mode: 'default' });

@@ -1,6 +1,8 @@
-import { User } from '../models/User';
+import { User } from '../models/User.js';
+import { getPaginationParams, createPaginationResult } from '../utils/pagination.js';
 
 export class UserController {
+  // Protected endpoints
   static async getMe({ userId }: any) {
     const user = await User.findById(userId || 1);
     return user || {};
@@ -14,5 +16,20 @@ export class UserController {
   static async deleteMe({ userId }: any) {
     await User.delete(userId || 1);
     return { message: 'User deleted' };
+  }
+
+  // Public endpoints
+  static async getAllUsers({ query }: any) {
+    const params = getPaginationParams(query);
+    const { data, total } = await User.findWithPagination(params);
+    return createPaginationResult(data, total, params.page!, params.limit!);
+  }
+
+  static async getUserById(id: string) {
+    const user = await User.findById(Number(id));
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return user;
   }
 }

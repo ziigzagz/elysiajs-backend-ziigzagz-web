@@ -1,12 +1,12 @@
 {
   "version": "7",
-  "dialect": "sqlite",
+  "dialect": "mysql",
   "entries": [
     {
       "idx": 0,
-      "version": "6",
-      "when": 1764500176810,
-      "tag": "0000_giant_sleepwalker",
+      "version": "5",
+      "when": 1764507920086,
+      "tag": "0000_ordinary_kronos",
       "breakpoints": true
     }
   ]
