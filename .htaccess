@@ -1,0 +1,5 @@
+PassengerEnabled on
+PassengerAppType node
+PassengerStartupFile dist/index.js
+PassengerAppRoot /home/ziigzagz/elysiajs-backend-ziigzagz-web/app
+PassengerNodejs /usr/bin/node
