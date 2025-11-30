@@ -1,5 +1,5 @@
-import { User } from '../models/User.js';
-import { getPaginationParams, createPaginationResult } from '../utils/pagination.js';
+import { User } from '../models/User';
+import { getPaginationParams, createPaginationResult } from '../utils/pagination';
 
 export class UserController {
   // Protected endpoints
@@ -31,8 +31,8 @@ export class UserController {
     return createPaginationResult(data, total, params.page!, params.limit!);
   }
 
-  static async getUserById(id: string) {
-    const user = await User.findById(Number(id));
+  static async getUserById(param: any) {
+    const user = await User.findById(Number(param.id));
     if (!user) {
       throw new Error('User not found');
     }

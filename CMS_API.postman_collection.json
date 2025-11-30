@@ -1,0 +1,394 @@
+{
+	"info": {
+		"name": "CMS API - Ziigzag",
+		"description": "Complete CMS API for managing categories, showcases, images, and tags",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get All Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories",
+							"host": ["{{baseUrl}}"],
+							"path": ["categories"]
+						}
+					}
+				},
+				{
+					"name": "Search Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories?search=web",
+							"host": ["{{baseUrl}}"],
+							"path": ["categories"],
+							"query": [
+								{
+									"key": "search",
+									"value": "web"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Category by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["categories", "1"]
+						}
+					}
+				},
+				{
+					"name": "Get Category by Slug",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories/slug/web-development",
+							"host": ["{{baseUrl}}"],
+							"path": ["categories", "slug", "web-development"]
+						}
+					}
+				},
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Web Development\",\n  \"slug\": \"web-development\",\n  \"description\": \"Website and web application projects\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/categories",
+							"host": ["{{baseUrl}}"],
+							"path": ["categories"]
+						}
+					}
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated Name\",\n  \"description\": \"Updated description\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/categories/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["categories", "1"]
+						}
+					}
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["categories", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Showcases",
+			"item": [
+				{
+					"name": "Get All Showcases",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/showcases",
+							"host": ["{{baseUrl}}"],
+							"path": ["showcases"]
+						}
+					}
+				},
+				{
+					"name": "Filter Showcases (Published)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/showcases?isPublished=true",
+							"host": ["{{baseUrl}}"],
+							"path": ["showcases"],
+							"query": [
+								{
+									"key": "isPublished",
+									"value": "true"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Filter by Category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/showcases?categoryId=1",
+							"host": ["{{baseUrl}}"],
+							"path": ["showcases"],
+							"query": [
+								{
+									"key": "categoryId",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Search Showcases",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/showcases?search=project",
+							"host": ["{{baseUrl}}"],
+							"path": ["showcases"],
+							"query": [
+								{
+									"key": "search",
+									"value": "project"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Showcase by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/showcases/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["showcases", "1"]
+						}
+					}
+				},
+				{
+					"name": "Get Showcase by Slug",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/showcases/slug/my-project",
+							"host": ["{{baseUrl}}"],
+							"path": ["showcases", "slug", "my-project"]
+						}
+					}
+				},
+				{
+					"name": "Create Showcase (Simple)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"categoryId\": 1,\n  \"title\": \"My Awesome Project\",\n  \"slug\": \"my-awesome-project\",\n  \"description\": \"<p>This is a detailed description of my project.</p>\",\n  \"bannerImage\": \"uploads/showcase/banners/banner.jpg\",\n  \"isPublished\": false,\n  \"status\": \"active\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/showcases",
+							"host": ["{{baseUrl}}"],
+							"path": ["showcases"]
+						}
+					}
+				},
+				{
+					"name": "Create Showcase (with Images & Tags)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"categoryId\": 1,\n  \"title\": \"E-commerce Platform\",\n  \"slug\": \"ecommerce-platform\",\n  \"description\": \"<p>Full-featured e-commerce platform with payment integration.</p>\",\n  \"bannerImage\": \"uploads/showcase/banners/ecommerce-banner.jpg\",\n  \"isPublished\": true,\n  \"status\": \"active\",\n  \"images\": [\n    {\n      \"imagePath\": \"uploads/showcase/images/screenshot1.jpg\",\n      \"altText\": \"Homepage Screenshot\"\n    },\n    {\n      \"imagePath\": \"uploads/showcase/images/screenshot2.jpg\",\n      \"altText\": \"Product Page\"\n    },\n    {\n      \"imagePath\": \"uploads/showcase/images/screenshot3.jpg\",\n      \"altText\": \"Checkout Process\"\n    }\n  ],\n  \"tags\": [\"react\", \"nodejs\", \"stripe\", \"mongodb\", \"tailwind\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/showcases",
+							"host": ["{{baseUrl}}"],
+							"path": ["showcases"]
+						}
+					}
+				},
+				{
+					"name": "Update Showcase",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Project Title\",\n  \"description\": \"<p>Updated description</p>\",\n  \"tags\": [\"react\", \"typescript\", \"nextjs\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/showcases/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["showcases", "1"]
+						}
+					}
+				},
+				{
+					"name": "Publish Showcase",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/showcases/1/publish",
+							"host": ["{{baseUrl}}"],
+							"path": ["showcases", "1", "publish"]
+						}
+					}
+				},
+				{
+					"name": "Unpublish Showcase",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/showcases/1/unpublish",
+							"host": ["{{baseUrl}}"],
+							"path": ["showcases", "1", "unpublish"]
+						}
+					}
+				},
+				{
+					"name": "Delete Showcase",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/showcases/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["showcases", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Upload",
+			"item": [
+				{
+					"name": "Upload Banner Image",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/upload/banner",
+							"host": ["{{baseUrl}}"],
+							"path": ["upload", "banner"]
+						}
+					}
+				},
+				{
+					"name": "Upload Multiple Images",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "files",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "files",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/upload/images",
+							"host": ["{{baseUrl}}"],
+							"path": ["upload", "images"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/",
+					"host": ["{{baseUrl}}"],
+					"path": [""]
+				}
+			}
+		}
+	]
+}

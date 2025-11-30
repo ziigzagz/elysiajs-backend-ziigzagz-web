@@ -1,7 +1,7 @@
 import { Elysia } from 'elysia';
-import { UserController } from '../controllers/UserController.js';
-import { authMiddleware } from '../middleware/auth.js';
-import { updateUserSchema } from '../schemas/user.schema.js';
+import { UserController } from '../controllers/UserController';
+import { authMiddleware } from '../middleware/auth';
+import { updateUserSchema } from '../schemas/user.schema';
 
 export const userRoutes = new Elysia()
   // Protected routes (ต้อง auth)
@@ -17,4 +17,4 @@ export const userRoutes = new Elysia()
   )
   // Public routes (ไม่ต้อง auth)
   .get('/users', () => UserController.findAll())
-  .get('/users/:id', ({ params }: any) => UserController.getUserById(params.id));
+  .get('/users/:id', ({ params }: any) => UserController.getUserById(params));

@@ -1,10 +1,13 @@
 import { Elysia } from 'elysia';
 import { swagger } from '@elysiajs/swagger';
 import { yoga } from '@elysiajs/graphql-yoga';
-import { authRoutes } from './routes/auth.js';
-import { userRoutes } from './routes/user.js';
-import { typeDefs } from './graphql/schema.js';
-import { resolvers } from './graphql/resolvers.js';
+import { authRoutes } from './routes/auth';
+import { userRoutes } from './routes/user';
+import { categoryRoutes } from './routes/category';
+import { showcaseRoutes } from './routes/showcase';
+import { uploadRoutes } from './routes/upload';
+import { typeDefs } from './graphql/schema';
+import { resolvers } from './graphql/resolvers';
 import { ZodError } from 'zod';
 
 const port = Number(process.env.PORT) || 3000;
@@ -41,9 +44,12 @@ const createApp = async () => {
       set.status = 500;
       return { error: error?.message || 'Internal server error' };
     })
-    .get('/', () => 'Hello Elysia')
+    .get('/', () => 'Hello Elysia CMS API')
     .use(authRoutes)
-    .use(userRoutes);
+    .use(userRoutes)
+    .use(categoryRoutes)
+    .use(showcaseRoutes)
+    .use(uploadRoutes);
 };
 
 // Auto-start server

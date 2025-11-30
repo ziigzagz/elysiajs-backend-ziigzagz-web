@@ -1,0 +1,357 @@
+{
+  "info": {
+    "name": "Ziigzag Web API",
+    "description": "API Collection for Ziigzag Web Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"password123\",\n  \"email\": \"test@example.com\",\n  \"fullName\": \"Test User\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/auth/refresh",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"your_refresh_token\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/users"
+          }
+        },
+        {
+          "name": "Get User By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/users/1"
+          }
+        },
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": "{{baseUrl}}/me"
+          }
+        },
+        {
+          "name": "Update My Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "url": "{{baseUrl}}/me",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Updated Name\",\n  \"email\": \"newemail@example.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete My Account",
+          "request": {
+            "method": "DELETE",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": "{{baseUrl}}/me"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories?search=",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"],
+              "query": [{"key": "search", "value": "", "description": "Search by name or slug"}]
+            }
+          }
+        },
+        {
+          "name": "Get Category By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/categories/1"
+          }
+        },
+        {
+          "name": "Get Category By Slug",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/categories/slug/web-development"
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/categories",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New Category\",\n  \"slug\": \"new-category\",\n  \"description\": \"Category description\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/categories/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Category\",\n  \"description\": \"Updated description\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/categories/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Showcases",
+      "item": [
+        {
+          "name": "Get All Showcases",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/showcases?categoryId=&isPublished=&status=&search=",
+              "host": ["{{baseUrl}}"],
+              "path": ["showcases"],
+              "query": [
+                {"key": "categoryId", "value": "", "description": "Filter by category ID"},
+                {"key": "isPublished", "value": "", "description": "true or false"},
+                {"key": "status", "value": "", "description": "active or inactive"},
+                {"key": "search", "value": "", "description": "Search by title or slug"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Showcase By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/showcases/1"
+          }
+        },
+        {
+          "name": "Get Showcase By Slug",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/showcases/slug/erfe"
+          }
+        },
+        {
+          "name": "Create Showcase",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/showcases",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": 1,\n  \"title\": \"New Showcase\",\n  \"slug\": \"new-showcase\",\n  \"description\": \"<p>Showcase description</p>\",\n  \"bannerImage\": \"uploads/banner.jpg\",\n  \"isPublished\": true,\n  \"status\": \"active\",\n  \"images\": [\n    {\n      \"imagePath\": \"uploads/image1.jpg\",\n      \"altText\": \"Image 1\"\n    }\n  ],\n  \"tags\": [\"tag1\", \"tag2\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Showcase",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/showcases/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Showcase\",\n  \"description\": \"<p>Updated description</p>\",\n  \"images\": [\n    {\n      \"imagePath\": \"uploads/new-image.jpg\",\n      \"altText\": \"New Image\"\n    }\n  ],\n  \"tags\": [\"newtag1\", \"newtag2\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Showcase",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/showcases/1"
+          }
+        },
+        {
+          "name": "Publish Showcase",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": "{{baseUrl}}/showcases/1/publish"
+          }
+        },
+        {
+          "name": "Unpublish Showcase",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": "{{baseUrl}}/showcases/1/unpublish"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Upload",
+      "item": [
+        {
+          "name": "Upload Banner",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/upload/banner",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Upload Multiple Images",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/upload/images",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "GraphQL",
+      "item": [
+        {
+          "name": "Get All Users (GraphQL)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/graphql",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"query { users { id username email fullName role status createdAt } }\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get User By ID (GraphQL)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/graphql",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"query { user(id: 1) { id username email fullName role status createdAt } }\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Me (GraphQL)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "url": "{{baseUrl}}/graphql",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"query { me { id username email fullName role status createdAt } }\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

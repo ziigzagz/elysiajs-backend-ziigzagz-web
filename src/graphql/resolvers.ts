@@ -1,5 +1,5 @@
-import { User } from '../models/User.js';
-import { verifyAccessToken } from '../utils/jwt.js';
+import { User } from '../models/User';
+import { verifyAccessToken } from '../utils/jwt';
 
 export const resolvers = {
   Query: {
@@ -36,7 +36,7 @@ export const resolvers = {
 
   Mutation: {
     register: async (_: any, { email, password, name }: any) => {
-      const user = await User.create({ email, password, name });
+      const user = await User.create({ username: email, password, email, fullName: name });
       return {
         ...user,
         createdAt: new Date().toISOString()
