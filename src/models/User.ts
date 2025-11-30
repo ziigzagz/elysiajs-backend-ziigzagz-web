@@ -4,8 +4,8 @@ import { eq, like, sql, asc, desc } from 'drizzle-orm';
 import type { PaginationParams } from '../utils/pagination.js';
 
 export class User {
-  static async findAll() {
-    return await db.select().from(users);
+  static async findAll(limit: number = 100) {
+    return await db.select().from(users).limit(limit);
   }
 
   static async findWithPagination(params: PaginationParams) {

@@ -16,5 +16,5 @@ export const userRoutes = new Elysia()
       .delete('/', (ctx: any) => UserController.deleteMe({ userId: ctx.userId }))
   )
   // Public routes (ไม่ต้อง auth)
-  .get('/users', (ctx: any) => UserController.getAllUsers({ query: ctx.query }))
+  .get('/users', () => UserController.findAll())
   .get('/users/:id', ({ params }: any) => UserController.getUserById(params.id));

@@ -19,6 +19,12 @@ export class UserController {
   }
 
   // Public endpoints
+  static async findAll() {
+    const users = await User.findAll(100);
+    return users;
+  }
+
+  // Public endpoints
   static async getAllUsers({ query }: any) {
     const params = getPaginationParams(query);
     const { data, total } = await User.findWithPagination(params);

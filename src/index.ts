@@ -1,7 +1,10 @@
 import { Elysia } from 'elysia';
 import { swagger } from '@elysiajs/swagger';
+import { yoga } from '@elysiajs/graphql-yoga';
 import { authRoutes } from './routes/auth.js';
 import { userRoutes } from './routes/user.js';
+import { typeDefs } from './graphql/schema.js';
+import { resolvers } from './graphql/resolvers.js';
 import { ZodError } from 'zod';
 
 const port = Number(process.env.PORT) || 3000;
@@ -15,12 +18,19 @@ const createApp = async () => {
 
   return app
     .use(swagger())
+    .use(
+      yoga({
+        typeDefs,
+        resolvers,
+        graphqlEndpoint: '/graphql',
+        graphiql: true,
+      })
+    )
     .onError(({ error, set }: any) => {
       if (error instanceof ZodError) {
         set.status = 400;
         return {
           error: 'Validation failed',
-          status: false,
           details: error.errors.map(e => ({
             field: e.path.join('.'),
             message: e.message
@@ -40,5 +50,6 @@ const createApp = async () => {
 createApp().then(app => {
   app.listen(port, () => {
     console.log(`🦊 Elysia is running at http://localhost:${port}`);
+    console.log(`🚀 GraphQL Playground: http://localhost:${port}/graphql`);
   });
 });
