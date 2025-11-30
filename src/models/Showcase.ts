@@ -15,113 +15,67 @@ export class Showcase {
       ));
     }
 
-    const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+    const query = db
+      .select({
+        showcase: showcases,
+        category: categories
+      })
+      .from(showcases)
+      .leftJoin(categories, eq(showcases.categoryId, categories.id));
 
-    const results = await db.execute(sql`
-      SELECT 
-        s.showcases_id, s.category_id, s.title, s.slug, s.description, 
-        s.banner_image, s.is_published, s.status, s.created_at, s.updated_at,
-        c.categories_id as category_id_ref, c.name as category_name, c.slug as category_slug, c.description as category_description
-      FROM showcases s
-      LEFT JOIN categories c ON s.category_id = c.categories_id
-      ${whereClause ? sql`WHERE ${whereClause}` : sql``}
-    `);
+    const results = conditions.length > 0 
+      ? await query.where(and(...conditions))
+      : await query;
 
-    return (results as any).map((row: any) => ({
-      showcase: {
-        id: row.showcases_id,
-        categoryId: row.category_id,
-        title: row.title,
-        slug: row.slug,
-        description: row.description,
-        bannerImage: row.banner_image,
-        isPublished: row.is_published,
-        status: row.status,
-        createdAt: row.created_at,
-        updatedAt: row.updated_at
-      },
-      category: row.category_name ? {
-        id: row.category_id_ref,
-        name: row.category_name,
-        slug: row.category_slug,
-        description: row.category_description
-      } : null
+    return results.map(row => ({
+      showcase: row.showcase,
+      category: row.category
     }));
   }
 
   static async findById(id: number) {
-    const result: any = await db.execute(sql`
-      SELECT 
-        s.showcases_id, s.category_id, s.title, s.slug, s.description, 
-        s.banner_image, s.is_published, s.status, s.created_at, s.updated_at,
-        c.categories_id as category_id_ref, c.name as category_name, c.slug as category_slug, c.description as category_description
-      FROM showcases s
-      LEFT JOIN categories c ON s.category_id = c.categories_id
-      WHERE s.showcases_id = ${id}
-    `);
+    const result = await db
+      .select({
+        showcase: showcases,
+        category: categories
+      })
+      .from(showcases)
+      .leftJoin(categories, eq(showcases.categoryId, categories.id))
+      .where(eq(showcases.id, id))
+      .limit(1);
 
     if (!result[0]) return null;
 
-    const row = result[0];
     const images = await db.select().from(showcaseImages).where(eq(showcaseImages.showcaseId, id));
     const tags = await db.select().from(showcaseTags).where(eq(showcaseTags.showcaseId, id));
 
     return {
-      id: row.showcases_id,
-      categoryId: row.category_id,
-      title: row.title,
-      slug: row.slug,
-      description: row.description,
-      bannerImage: row.banner_image,
-      isPublished: row.is_published,
-      status: row.status,
-      createdAt: row.created_at,
-      updatedAt: row.updated_at,
-      category: row.category_name ? {
-        id: row.category_id_ref,
-        name: row.category_name,
-        slug: row.category_slug,
-        description: row.category_description
-      } : null,
+      ...result[0].showcase,
+      category: result[0].category,
       images,
       tags
     };
   }
 
   static async findBySlug(slug: string) {
-    const result: any = await db.execute(sql`
-      SELECT 
-        s.showcases_id, s.category_id, s.title, s.slug, s.description, 
-        s.banner_image, s.is_published, s.status, s.created_at, s.updated_at,
-        c.categories_id as category_id_ref, c.name as category_name, c.slug as category_slug, c.description as category_description
-      FROM showcases s
-      LEFT JOIN categories c ON s.category_id = c.categories_id
-      WHERE s.slug = ${slug}
-    `);
+    const result = await db
+      .select({
+        showcase: showcases,
+        category: categories
+      })
+      .from(showcases)
+      .leftJoin(categories, eq(showcases.categoryId, categories.id))
+      .where(eq(showcases.slug, slug))
+      .limit(1);
 
     if (!result[0]) return null;
 
-    const row = result[0];
-    const images = await db.select().from(showcaseImages).where(eq(showcaseImages.showcaseId, row.showcases_id));
-    const tags = await db.select().from(showcaseTags).where(eq(showcaseTags.showcaseId, row.showcases_id));
+    const images = await db.select().from(showcaseImages).where(eq(showcaseImages.showcaseId, result[0].showcase.id));
+    const tags = await db.select().from(showcaseTags).where(eq(showcaseTags.showcaseId, result[0].showcase.id));
 
     return {
-      id: row.showcases_id,
-      categoryId: row.category_id,
-      title: row.title,
-      slug: row.slug,
-      description: row.description,
-      bannerImage: row.banner_image,
-      isPublished: row.is_published,
-      status: row.status,
-      createdAt: row.created_at,
-      updatedAt: row.updated_at,
-      category: row.category_name ? {
-        id: row.category_id_ref,
-        name: row.category_name,
-        slug: row.category_slug,
-        description: row.category_description
-      } : null,
+      ...result[0].showcase,
+      category: result[0].category,
       images,
       tags
     };
@@ -146,8 +100,8 @@ export class Showcase {
       status: (data.status || 'active') as 'active' | 'inactive'
     };
     
-    const result: any = await db.insert(showcases).values(insertData);
-    return this.findById(Number(result.insertId));
+    const result = await db.insert(showcases).values(insertData);
+    return this.findById(Number(result[0]?.insertId));
   }
 
   static async update(id: number, data: {

@@ -9,7 +9,7 @@ export const categoryRoutes = new Elysia({ prefix: '/categories' })
   })
   .get('/:id', CategoryController.getById, {
     params: t.Object({
-      id: t.String()
+      id: t.Numeric()
     })
   })
   .get('/slug/:slug', CategoryController.getBySlug, {
@@ -26,7 +26,7 @@ export const categoryRoutes = new Elysia({ prefix: '/categories' })
   })
   .put('/:id', CategoryController.update, {
     params: t.Object({
-      id: t.String()
+      id: t.Numeric()
     }),
     body: t.Object({
       name: t.Optional(t.String()),
@@ -36,6 +36,6 @@ export const categoryRoutes = new Elysia({ prefix: '/categories' })
   })
   .delete('/:id', CategoryController.delete, {
     params: t.Object({
-      id: t.String()
+      id: t.Numeric()
     })
   });

@@ -20,6 +20,14 @@ export class FileUpload {
   }
 
   static async saveMultipleFiles(files: File[], type: 'banner' | 'image'): Promise<string[]> {
+    if (!Array.isArray(files)) {
+      throw new Error('Files must be an array');
+    }
+    // check length > 0
+    if (files.length === 0) {
+      throw new Error('Files array must contain at least one file');
+    }
+    console.log("files:", files);
     return Promise.all(files.map(file => this.saveFile(file, type)));
   }
 }

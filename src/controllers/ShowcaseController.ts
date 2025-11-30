@@ -28,8 +28,14 @@ export class ShowcaseController {
 
   static async create({ body }: any) {
     const { images, tags, ...showcaseData } = body;
-    const showcase = await Showcase.create(showcaseData);
 
+    // check for existing showcase with same slug
+    const existingShowcase = await Showcase.findBySlug(showcaseData.slug);
+    if (existingShowcase) {
+      return { success: false, message: 'Showcase with this slug already exists' };
+    }
+    const showcase = await Showcase.create(showcaseData);
+    
     if (showcase && images?.length) {
       await ShowcaseImage.bulkCreate(images.map((img: any, idx: number) => ({
         showcaseId: showcase.id,

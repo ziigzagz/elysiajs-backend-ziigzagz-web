@@ -7,7 +7,7 @@ export class CategoryController {
   }
 
   static async getById({ params }: any) {
-    const category = await Category.findById(parseInt(params.id));
+    const category = await Category.findById(params.id);
     if (!category) return { success: false, message: 'Category not found' };
     return { success: true, data: category };
   }
@@ -24,13 +24,13 @@ export class CategoryController {
   }
 
   static async update({ params, body }: any) {
-    const category = await Category.update(parseInt(params.id), body);
+    const category = await Category.update(params.id, body);
     if (!category) return { success: false, message: 'Category not found' };
     return { success: true, data: category };
   }
 
   static async delete({ params }: any) {
-    await Category.delete(parseInt(params.id));
+    await Category.delete(params.id);
     return { success: true, message: 'Category deleted' };
   }
 }

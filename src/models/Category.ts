@@ -22,8 +22,13 @@ export class Category {
   }
 
   static async create(data: { name: string; slug: string; description?: string }) {
-    const result: any = await db.insert(categories).values(data);
-    return this.findById(Number(result.insertId));
+    // check for existing category with same slug
+    const existingCategory = await this.findBySlug(data.slug);
+    if (existingCategory) {
+      throw new Error('Category with this slug already exists');
+    }
+    const result = await db.insert(categories).values(data);
+    return this.findById(Number(result[0]?.insertId));
   }
 
   static async update(id: number, data: { name?: string; slug?: string; description?: string }) {

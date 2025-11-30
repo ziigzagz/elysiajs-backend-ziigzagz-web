@@ -11,10 +11,11 @@ export const uploadRoutes = new Elysia({ prefix: '/upload' })
     })
   })
   .post('/images', async ({ body }: any) => {
-    const filepaths = await FileUpload.saveMultipleFiles(body.files, 'image');
+    const files = Array.isArray(body.files) ? body.files : [body.files];
+    const filepaths = await FileUpload.saveMultipleFiles(files, 'image');
     return { success: true, filepaths };
   }, {
     body: t.Object({
-      files: t.Array(t.File())
+      files: t.Union([t.File(), t.Array(t.File())])
     })
   });

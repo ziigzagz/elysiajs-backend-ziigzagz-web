@@ -58,8 +58,8 @@ export class User {
     if (existingUser) {
       throw new Error('User already exists');
     }
-    const result: any = await db.insert(users).values(data);
-    return this.findById(Number(result.insertId));
+    const result = await db.insert(users).values(data);
+    return this.findById(Number(result[0]?.insertId));
   }
 
   static async update(id: number, data: Partial<{ username: string; password: string; email: string; fullName: string }>) {
